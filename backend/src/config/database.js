@@ -60,6 +60,15 @@ class Database {
     });
   }
 
+  insertOne(sql, params = []) {
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, params, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+  }
+
   close() {
     return new Promise((resolve, reject) => {
       this.db.close((err) => {
