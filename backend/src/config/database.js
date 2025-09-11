@@ -62,9 +62,9 @@ class Database {
 
   insertOne(sql, params = []) {
     return new Promise((resolve, reject) => {
-      this.db.run(sql, params, (err, row) => {
+      this.db.run(sql, params, function (err) {
         if (err) reject(err);
-        else resolve(row);
+        else resolve({ lastID: this.lastID, changes: this.changes });
       });
     });
   }
