@@ -39,3 +39,28 @@ exports.deleteAsset = catchAsync(async (req, res) => {
   const data = await db.queryOne(stmt, [id]);
   return res.status(204).json(data);
 });
+
+exports.reserveAsset = catchAsync(async (req, res) => {
+  const { time, duration } = req.body;
+  const { id } = req.params;
+  const { user_id } = req.query;
+
+  if (!id) {
+    return res.status(400).json({ message: 'Asset id is required' });
+  } else if (!user_id) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  const selectStmt = `SELECT * FROM reservations WHERE asset_id = ? and ? >= time and ? < time + duration`;
+
+  const query = await db.queryOne(selectStmt, [id, time, time + duration]);
+  if (query) {
+    return res
+      .status(409)
+      .json({ message: 'Asset already reserved for the duration.' });
+  }
+  const stmt = `INSERT INTO reservations (asset_id,user_id,time,duration) VALUES (?,?,?,?)`;
+
+  const data = await db.insertOne(stmt, [id, user_id, time, duration]);
+  return res.status(201).json(data);
+});
