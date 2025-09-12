@@ -66,3 +66,24 @@ exports.reserveAsset = catchAsync(async (req, res) => {
   const data = await db.insertOne(stmt, [id, user_id, time, duration]);
   return res.status(201).json(data);
 });
+
+exports.pingAsset = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { time, duration } = req.query;
+  const timeNum = Number(time);
+  const durationNum = Number(duration);
+
+  const stmt = `SELECT * FROM assets JOIN reservations on assets.id = reservations.asset_id where
+      assets.id = ?
+      and (
+        reservations.time < ?
+        and reservations.time + reservations.duration > ?
+      );`;
+
+  const check = await db.queryOne(stmt, [id, timeNum + durationNum, timeNum]);
+  console.log(check);
+  if (!check) {
+    return res.status(200).json({ message: 'Asset is available' });
+  }
+  return res.status(409).json({ message: 'Asset is not available' });
+});
