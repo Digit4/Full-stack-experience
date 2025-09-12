@@ -3,6 +3,7 @@ const catchAsync = (fn) => {
     try {
       await fn(req, res, next);
     } catch (error) {
+      console.error(error);
       const errorResponse = {
         message: 'Internal Server Error',
       };
