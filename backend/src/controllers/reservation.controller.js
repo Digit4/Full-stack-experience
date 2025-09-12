@@ -41,9 +41,9 @@ exports.createReservation = catchAsync(async (req, res) => {
 });
 
 exports.deleteReservation = catchAsync(async (req, res) => {
-  const { asset_id, user_id } = req.query;
-  const stmt = `DELETE FROM reservations WHERE asset_id = ? and user_id = ?`;
+  const { id } = req.params;
+  const stmt = `DELETE FROM reservations WHERE id = ?`;
 
-  const data = await db.queryOne(stmt, [asset_id, user_id]);
+  const data = await db.queryOne(stmt, [id]);
   return res.status(204).json(data);
 });
