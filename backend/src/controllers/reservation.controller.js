@@ -1,5 +1,6 @@
 const db = require('../config/database');
 const catchAsync = require('../utils/errorHandler');
+const { convertUnixToDate } = require('../utils/helpers');
 
 exports.fetchAllReservations = catchAsync(async (req, res) => {
   const stmt = `SELECT * FROM reservations`;
@@ -10,8 +11,9 @@ exports.fetchAllReservations = catchAsync(async (req, res) => {
       .status(404)
       .json({ message: 'Failed to fetch all reservations' });
   }
+  const newData = data.map((i) => convertUnixToDate(i));
 
-  return res.status(200).json(data);
+  return res.status(200).json(newData);
 });
 
 exports.fetchReservationById = catchAsync(async (req, res) => {
@@ -24,7 +26,9 @@ exports.fetchReservationById = catchAsync(async (req, res) => {
       .status(404)
       .json({ message: `Reservation not found with id: ${id}` });
   }
-  return res.status(200).json(data);
+  const newData = convertUnixToDate(data);
+
+  return res.status(200).json(newData);
 });
 
 exports.createReservation = catchAsync(async (req, res) => {
@@ -37,9 +41,9 @@ exports.createReservation = catchAsync(async (req, res) => {
 });
 
 exports.deleteReservation = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const stmt = `DELETE FROM reservations WHERE id = ?`;
+  const { asset_id, user_id } = req.query;
+  const stmt = `DELETE FROM reservations WHERE asset_id = ? and user_id = ?`;
 
-  const data = await db.queryOne(stmt, [id]);
+  const data = await db.queryOne(stmt, [asset_id, user_id]);
   return res.status(204).json(data);
 });

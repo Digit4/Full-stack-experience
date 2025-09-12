@@ -10,5 +10,6 @@ const {
 router.post('/', createReservation);
 router.get('/all', fetchAllReservations);
 router.get('/', fetchReservationById);
+router.delete('/', deleteReservation);
 
 module.exports = router;
