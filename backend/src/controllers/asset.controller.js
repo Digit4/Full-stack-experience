@@ -51,7 +51,9 @@ exports.reserveAsset = catchAsync(async (req, res) => {
     return res.status(400).json({ message: 'User id is required' });
   }
 
-  const selectStmt = `SELECT * FROM reservations WHERE asset_id = ? and ? >= time and ? < time + duration`;
+  const selectStmt = `SELECT * FROM reservations WHERE asset_id = ? and (
+      reservations.time + reservations.duration > ? and reservations.time < ?
+    );`;
 
   const query = await db.queryOne(selectStmt, [id, time, time + duration]);
   if (query) {
