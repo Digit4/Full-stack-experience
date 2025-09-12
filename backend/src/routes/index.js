@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userRoutes = require('./user.routes');
 const assetRoutes = require('./asset.routes');
+const reservationRoutes = require('./reservation.routes');
 
 // sample response
 router.get('/', (req, res) => {
@@ -10,5 +11,6 @@ router.get('/', (req, res) => {
 
 router.use('/user', userRoutes);
 router.use('/asset', assetRoutes);
+router.use('/reservation', reservationRoutes);
 
 module.exports = router;
