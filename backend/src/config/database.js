@@ -40,6 +40,15 @@ class Database {
 	        "is_admin"	INTEGER DEFAULT 0,
 	        PRIMARY KEY("id" AUTOINCREMENT));`,
     );
+    this.db.run(`CREATE TABLE IF NOT EXISTS "reservations" (
+	        "id"	INTEGER,
+	        "asset_id"	INTEGER,
+	        "user_id"	INTEGER,
+	        "time"	INTEGER,
+	        "duration"	INTEGER,
+	        PRIMARY KEY("id" AUTOINCREMENT),
+	        FOREIGN KEY("asset_id") REFERENCES "assets"("id"),
+	        FOREIGN KEY("user_id") REFERENCES "users"("id"));`);
   }
 
   queryAll(sql, params = []) {
