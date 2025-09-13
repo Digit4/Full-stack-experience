@@ -12,7 +12,7 @@ Application backend runs on port 5000 by default and frontend on 3000.
 #### Requirements
 
 - Node.js **v22.19.0** or later
-- npm (comes with Node.js)a
+- npm (comes with Node.js)
 
 #### How to start
 
