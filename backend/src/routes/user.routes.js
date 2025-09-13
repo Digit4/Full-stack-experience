@@ -6,10 +6,11 @@ const {
   fetchUserById,
   deleteUser,
 } = require('../controllers/user.controller');
+const { checkUser } = require('../middlewares/auth');
 
 router.get('/all', fetchAllUsers);
 router.get('/:id', fetchUserById);
-router.post('/', createUser);
-router.delete('/:id', deleteUser);
+router.post('/', checkUser, createUser);
+router.delete('/:id', checkUser, deleteUser);
 
 module.exports = router;
