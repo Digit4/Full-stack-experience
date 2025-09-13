@@ -18,7 +18,7 @@ Application backend runs on port 5000 by default and frontend on 3000.
 
 ##### Script
 
-On Linux/MacOS
+On Linux/MacOS(while in directory)
 
 ```bash
 chmod +x server.sh
