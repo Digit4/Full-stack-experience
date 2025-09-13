@@ -3,7 +3,7 @@ const catchAsync = require('../utils/errorHandler');
 const { convertUnixToDate } = require('../utils/helpers');
 
 exports.fetchAllReservations = catchAsync(async (req, res) => {
-  const stmt = `SELECT * FROM reservations`;
+  const stmt = `SELECT reservations.id as id, assets.name as asset_name, users.name as user_name, time,duration  from assets inner join reservations inner join users on assets.id = reservations.asset_id and users.id = reservations.user_id;`;
 
   const data = await db.queryAll(stmt);
   if (!data) {
