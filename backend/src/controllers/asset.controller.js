@@ -32,6 +32,22 @@ exports.createAsset = catchAsync(async (req, res) => {
   return res.status(201).json(data);
 });
 
+exports.updateAsset = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { name, ip_address, description, type } = req.body;
+  const stmt = `UPDATE assets SET name = ?, ip_address = ?, description = ?, type = ? WHERE id = ?`;
+
+  const data = await db.insertOne(stmt, [
+    name,
+    ip_address,
+    description,
+    type,
+    id,
+  ]);
+
+  return res.status(200).json(data);
+});
+
 exports.deleteAsset = catchAsync(async (req, res) => {
   const { id } = req.params;
   const stmt = `DELETE FROM assets WHERE id = ?`;
